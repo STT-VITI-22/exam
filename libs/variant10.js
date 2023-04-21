@@ -1,5 +1,3 @@
-
-
 /**
  * Recursively unsqueeze a multi dimensional array
  * @param {Array} array
@@ -8,13 +6,14 @@
  * @returns {Array | *} Returns the squeezed array
  * @private
  */
-function _unsqueeze (array, dims, dim) {
+
+function unsqueeze(array, dims, dim) {
   let i, ii
 
   if (Array.isArray(array)) {
     const next = dim + 1
     for (i = 0, ii = array.length; i < ii; i++) {
-      array[i] = _unsqueeze(array[i], dims, next)
+      array[i] = unsqueeze(array[i], dims, next)
     }
   } else {
     for (let d = dim; d < dims; d++) {
@@ -30,7 +29,7 @@ function _unsqueeze (array, dims, dim) {
  * @param {Array} array   A multi dimensional array
  * @return {Array}        The flattened array (1 dimensional)
  */
-export function flatten (array) {
+function flatten (array) {
   if (!Array.isArray(array)) {
     // if not an array, return as is
     return array
@@ -53,7 +52,7 @@ export function flatten (array) {
  * @param {Array} array
  * @param {function} callback
  */
-export function map (array, callback) {
+function map (array, callback) {
   return Array.prototype.map.call(array, callback)
 }
 
@@ -62,8 +61,10 @@ export function map (array, callback) {
  * @param {Array} array
  * @param {function} callback
  */
-export function forEach (array, callback) {
-  Array.prototype.forEach.call(array, callback)
+function forEach (array, callback) {
+  let tmp = array
+  Array.prototype.forEach.call(tmp, callback)
+  return tmp
 }
 
 /**
@@ -71,8 +72,8 @@ export function forEach (array, callback) {
  * @param {Array} array
  * @param {function} callback
  */
-export function filter (array, callback) {
-  if (arraySize(array).length !== 1) {
+function filter (array, callback) {
+  if (Array.isArray(array) && array.length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 
@@ -86,7 +87,7 @@ export function filter (array, callback) {
  * @return {Array} Returns the filtered array
  * @private
  */
-export function filterRegExp (array, regexp) {
+function filterRegExp (array, regexp) {
   if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
@@ -99,7 +100,7 @@ export function filterRegExp (array, regexp) {
  * @param {Array} array
  * @param {string} separator
  */
-export function join (array, separator) {
+function join (array, separator) {
   return Array.prototype.join.call(array, separator)
 }
 
@@ -108,7 +109,7 @@ export function join (array, separator) {
  * @param {Array} a  An array
  * @return {Array} An array of objects containing the original value and its identifier
  */
-export function identify (a) {
+function identify (a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected')
   }
@@ -136,7 +137,7 @@ export function identify (a) {
  * @param {array} a  An array
  * @return {array} An array of values without identifiers
  */
-export function generalize (a) {
+function generalize (a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected')
   }
@@ -161,7 +162,7 @@ export function generalize (a) {
  * @param {function} typeOf   Callback function to use to determine the type of a value
  * @return {string}
  */
-export function getArrayDataType (array, typeOf) {
+function getArrayDataType (array, typeOf) {
   let type // to hold type info
   let length = 0 // to hold length value to ensure it has consistent sizes
 
@@ -200,14 +201,14 @@ export function getArrayDataType (array, typeOf) {
  * @param array
  * @returns {*}
  */
-export function last (array) {
+function last (array) {
   return array[array.length - 1]
 }
 
 /**
  * Get all but the last element of array.
  */
-export function initial (array) {
+function initial (array) {
   return array.slice(0, array.length - 1)
 }
 
@@ -217,6 +218,6 @@ export function initial (array) {
  * @param {*} item
  * @return {boolean}
  */
-export function contains (array, item) {
+function contains (array, item) {
   return array.indexOf(item) !== -1
 }
