@@ -215,10 +215,36 @@ describe('isNumber function', () => {
   });
 
   describe('isBigNumber function', () => {
-    it('should return true for bignumber', () => {
+  
+    it('should return false for invalid big numbers', () => {
+      const invalidBigNumber = {
+        isBigNumber: true,
+        constructor: {
+          prototype: { isBigNumber: false }, 
+        },
+      };
+      expect(isBigNumber(invalidBigNumber)).toBe(false);
     });
   
-    it('should return false for not bignumber', () => {
+    it('should return false for invalid numbers with isDecimal method', () => {
+      const invalidNumberWithDecimalMethod = {
+        constructor: {
+          isDecimal: x => x === false,
+        },
+      };
+      expect(isBigNumber(invalidNumberWithDecimalMethod)).toBe(false);
+    });
+  
+    it('should return false for non-big number objects', () => {
+      const nonBigNumberObject = { prop: 'value' };
+      expect(isBigNumber(nonBigNumberObject)).toBe(false);
+    });
+  
+    it('should return false for non-objects', () => {
+      expect(isBigNumber(42)).toBe(false);
+      expect(isBigNumber(true)).toBe(false);
+      expect(isBigNumber(null)).toBe(false);
+      expect(isBigNumber(undefined)).toBe(false);
+      expect(isBigNumber('test')).toBe(false);
     });
   });
-  
