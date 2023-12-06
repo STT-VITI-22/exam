@@ -7,26 +7,23 @@ import {splitNumber} from "./variant5";
  *                              If not provided, the maximum available digits
  *                              is used.
  */
-export function toExponential (value, precision) {
+export function toExponential(value, precision) {
   if (isNaN(value) || !isFinite(value)) {
-    return String(value)
+    return String(value);
   }
 
-  // round if needed, else create a clone
-  const split = splitNumber(value)
-  const rounded = precision ? roundDigits(split, precision) : split
-  let c = rounded.coefficients
-  const e = rounded.exponent
+  const split = splitNumber(value);
+  const rounded = precision ? roundDigits(split, precision) : split;
+  let c = rounded.coefficients;
+  const e = rounded.exponent;
 
-  // append zeros if needed
-  if (c.length < precision) {
-    c = c.concat(zeros(precision - c.length))
+  while (c.length < precision) {
+    c.push(0);
   }
 
-  // format as `C.CCCe+EEE` or `C.CCCe-EEE`
-  const first = c.shift()
+  const first = c.shift();
   return rounded.sign + first + (c.length > 0 ? ('.' + c.join('')) : '') +
-    'e' + (e >= 0 ? '+' : '') + e
+    'e' + (e >= 0 ? '+' : '') + e;
 }
 
 /**
@@ -130,7 +127,7 @@ export function roundDigits (split, precision) {
  * @param {number} length
  * @return {Array}
  */
-function zeros (length) {
+export function zeros (length) {
   const arr = []
   for (let i = 0; i < length; i++) {
     arr.push(0)
