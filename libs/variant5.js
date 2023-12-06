@@ -7,6 +7,7 @@
  * @param {number | boolean} value
  * @return {boolean} isInteger
  */
+
 export function isInteger (value) {
   if (typeof value === 'boolean') {
     return true
