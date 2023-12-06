@@ -139,6 +139,7 @@ function _reshape (array, sizes) {
  * @param {Array} [size]
  * @returns {Array} returns the array itself
  */
+
 function squeeze (array, size) {
   const s = size || arraySize(array)
 
