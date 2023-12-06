@@ -66,14 +66,12 @@ describe('Testing product function', () => {
 describe('Testing squeeze function', () => {
   it('should squeeze arrays correctly', () => {
     const array1 = [1, [2, [3, [4]]]];
-    const expectedSqueezedArray1 = [1, [2, [3, [4]]]]; // Corrected expectation
+    const expectedSqueezedArray1 = [1, [2, [3, [4]]]];
     expect(squeeze(array1)).toEqual(expectedSqueezedArray1);
 
     const array2 = [[[1]]];
     const expectedSqueezedArray2 = 1;
     expect(squeeze(array2)).toEqual(expectedSqueezedArray2);
-
-    // Add more corrected test expectations for other scenarios...
   });
 });
 
