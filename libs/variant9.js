@@ -1,8 +1,7 @@
 import {flatten} from "./variant9";
 
-import { reshape } from "./yourModuleName"; // Replace with your actual module name
+import { reshape } from "./variant9"; 
 
-// Mock or import any additional dependencies needed for testing
 
 describe('reshape', () => {
   test('reshape should reshape the array correctly', () => {
@@ -10,8 +9,7 @@ describe('reshape', () => {
     const inputSizes = [4];
     const expectedOutput = [[1, 2, 3, 4]];
 
-    // Assuming that flatten, processSizesWildcard, product, and _reshape are working correctly
-    // You may want to use mocks or stubs for these functions if needed
+   
 
     // Mocking flatten
     jest.mock('./yourModuleName', () => ({
@@ -23,7 +21,7 @@ describe('reshape', () => {
       flatten: jest.fn(array => array.flat()),
       processSizesWildcard: jest.fn(sizes => sizes),
       product: jest.fn(sizes => sizes.reduce((acc, val) => acc * val, 1)),
-      _reshape: jest.fn((array, sizes) => array), // Mocking _reshape to return the input array
+      _reshape: jest.fn((array, sizes) => array), 
     }));
 
     const result = reshape(inputArray, inputSizes);
@@ -31,10 +29,10 @@ describe('reshape', () => {
     expect(result).toEqual(expectedOutput);
   });
 
-  // Add more test cases for different scenarios
+  
 });
 
-import { processSizesWildcard } from "./yourModuleName"; // Replace with your actual module name
+import { processSizesWildcard } from "./variant9"; 
 
 describe('processSizesWildcard', () => {
   test('should replace a single wildcard correctly', () => {
@@ -50,7 +48,7 @@ describe('processSizesWildcard', () => {
   test('should handle no wildcard in sizes', () => {
     const sizes = [2, 3, 4];
     const currentLength = 24;
-    const expectedOutput = sizes.slice(); // Expecting the sizes array to remain unchanged
+    const expectedOutput = sizes.slice(); 
 
     const result = processSizesWildcard(sizes, currentLength);
 
@@ -68,7 +66,7 @@ describe('processSizesWildcard', () => {
 
   test('should throw an error if unable to replace the wildcard', () => {
     const sizes = [2, -1, 3];
-    const currentLength = 7; // Unable to replace the wildcard with the given current length
+    const currentLength = 7; 
 
     expect(() => {
       processSizesWildcard(sizes, currentLength);
@@ -76,16 +74,49 @@ describe('processSizesWildcard', () => {
   });
 });
 
-/**
- * Computes the product of all array elements.
- * @param {Array<number>} array Array of factors
- * @returns {number}            Product of all elements
- */
-function product (array) {
-  return array.reduce((prev, curr) => prev * curr, 1)
-}
+import { product } from "./variant9"; 
 
-import { _reshape } from "./yourModuleName"; // Replace with your actual module name
+describe('product', () => {
+  test('should calculate the product of an array of numbers', () => {
+    const inputArray = [2, 3, 4];
+    const expectedOutput = 24;
+
+    const result = product(inputArray);
+
+    expect(result).toEqual(expectedOutput);
+  });
+
+  test('should handle an empty array and return 1', () => {
+    const inputArray = [];
+    const expectedOutput = 1;
+
+    const result = product(inputArray);
+
+    expect(result).toEqual(expectedOutput);
+  });
+
+  test('should handle an array with a single element', () => {
+    const inputArray = [5];
+    const expectedOutput = 5;
+
+    const result = product(inputArray);
+
+    expect(result).toEqual(expectedOutput);
+  });
+
+  test('should handle an array with a zero element and return 0', () => {
+    const inputArray = [2, 0, 4];
+    const expectedOutput = 0;
+
+    const result = product(inputArray);
+
+    expect(result).toEqual(expectedOutput);
+  });
+
+  
+});
+
+import { _reshape } from "./variant9"; 
 
 describe('_reshape', () => {
   test('should reshape array correctly', () => {
@@ -118,9 +149,9 @@ describe('_reshape', () => {
     expect(result).toEqual(expectedOutput);
   });
 
-  // Add more test cases for different scenarios
+  
 });
-import { squeeze } from "./yourModuleName"; // Replace with your actual module name
+import { squeeze } from "./variant9"; 
 
 describe('squeeze', () => {
   test('should squeeze outer dimensions', () => {
@@ -160,10 +191,10 @@ describe('squeeze', () => {
     expect(result).toEqual(expectedOutput);
   });
 
-  // Add more test cases for different scenarios
+  
 });
 
-import { _squeeze } from "./yourModuleName"; // Replace with your actual module name
+import { _squeeze } from "./variant9"; 
 
 describe('_squeeze', () => {
   test('should recursively squeeze array to the specified dimensions', () => {
@@ -193,10 +224,10 @@ describe('_squeeze', () => {
     expect(result).toEqual(expectedOutput);
   });
 
-  // Add more test cases for different scenarios
+  
 });
 
-import { unsqueeze } from "./yourModuleName"; // Replace with your actual module name
+import { unsqueeze } from "./variant9"; 
 
 describe('unsqueeze', () => {
   test('should unsqueeze outer dimensions', () => {
@@ -247,5 +278,5 @@ describe('unsqueeze', () => {
     expect(inputSize).toEqual(expectedSize);
   });
 
-  // Add more test cases for different scenarios
+ 
 });
