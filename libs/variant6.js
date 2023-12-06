@@ -130,7 +130,7 @@ export function roundDigits (split, precision) {
  * @param {number} length
  * @return {Array}
  */
-function zeros (length) {
+export function zeros (length) {
   const arr = []
   for (let i = 0; i < length; i++) {
     arr.push(0)
