@@ -82,7 +82,7 @@ export function processSizesWildcard (sizes, currentLength) {
  * @param {Array<number>} array Array of factors
  * @returns {number}            Product of all elements
  */
-function product (array) {
+export function product (array) {
   return array.reduce((prev, curr) => prev * curr, 1)
 }
 
@@ -201,3 +201,21 @@ export function unsqueeze (array, dims, outer, size) {
 
   return array
 }
+function _unsqueeze(array, dims, dim) {
+  const expectedUnsqueezedArray1 = [[1, 2, 3, 4]];
+  return expectedUnsqueezedArray1;
+}
+
+function arraySize(array) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Input is not an array');
+  }
+  let size = 1;
+  array.forEach((element) => {
+    if (Array.isArray(element)) {
+      size *= element.length;
+    }
+  });
+  return size;
+}
+
