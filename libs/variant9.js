@@ -2,7 +2,7 @@
 import {flatten} from "./variant10";
 
 
- *// Re-shape a multi dimensional array to fit the specified dimensions
+ /**  Re-shape a multi dimensional array to fit the specified dimensions
  * @param {Array} array           Array to be reshaped
  * @param {Array.<number>} sizes  List of sizes for each dimension
  * @returns {Array}               Array whose data has been formatted to fit the
@@ -10,7 +10,7 @@ import {flatten} from "./variant10";
  *
  * @throws {DimensionError}       If the product of the new dimension sizes does
  *                                not equal that of the old ones
- *//
+ */
 export function reshape (array, sizes) {
   const flatArray = flatten(array)
   const currentLength = flatArray.length
@@ -47,7 +47,7 @@ export function reshape (array, sizes) {
   }
 }
 
-//
+/** 
  * Replaces the wildcard -1 in the sizes array.
  * @param {Array.<number>} sizes  List of sizes for each dimension. At most on wildcard.
  * @param {number} currentLength  Number of elements in the array.
@@ -78,7 +78,7 @@ export function processSizesWildcard (sizes, currentLength) {
   return processedSizes
 }
 
-/
+/** 
  * Computes the product of all array elements.
  * @param {Array<number>} array Array of factors
  * @returns {number}            Product of all elements
@@ -87,7 +87,7 @@ function product (array) {
   return array.reduce((prev, curr) => prev * curr, 1)
 }
 
-/
+/** 
  * Iteratively re-shape a multi dimensional array to fit the specified dimensions
  * @param {Array} array           Array to be reshaped
  * @param {Array.<number>} sizes  List of sizes for each dimension
@@ -116,8 +116,8 @@ function _reshape (array, sizes) {
   return tmpArray
 }
 
-Ульянко Практика, [06.12.2023 10:37]
-/
+
+/** 
  * Squeeze a multi dimensional array
  * @param {Array} array
  * @param {Array} [size]
@@ -147,7 +147,7 @@ export function squeeze (array, size) {
   return array
 }
 
-/
+/** 
  * Recursively squeeze a multi dimensional array
  * @param {Array} array
  * @param {number} dims Required number of dimensions
