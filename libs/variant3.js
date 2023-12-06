@@ -51,3 +51,7 @@ export function isFunctionAssignmentNode (x) {
 export function isFunctionNode (x) {
   return (x && x.isFunctionNode === true && x.constructor.prototype.isNode === true) || false
 }
+
+export function isOperatorNode(x) {
+  return (x && x.isOperatorNode === true && x.constructor.prototype.isNode === true) || false;
+}
