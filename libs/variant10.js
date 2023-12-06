@@ -8,7 +8,7 @@
  * @returns {Array | *} Returns the squeezed array
  * @private
  */
-function _unsqueeze (array, dims, dim) {
+export function _unsqueeze (array, dims, dim) {
   let i, ii
 
   if (Array.isArray(array)) {
@@ -71,12 +71,12 @@ export function forEach (array, callback) {
  * @param {Array} array
  * @param {function} callback
  */
-export function filter (array, callback) {
-  if (arraySize(array).length !== 1) {
-    throw new Error('Only one dimensional matrices supported')
+ export function filter(array, callback) {
+  if (!Array.isArray(array) || array.length !== 1) {
+    throw new Error('Only one dimensional matrices supported');
   }
 
-  return Array.prototype.filter.call(array, callback)
+  return Array.prototype.filter.call(array, callback);
 }
 
 /**
