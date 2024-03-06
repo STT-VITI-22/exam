@@ -5,6 +5,7 @@
 /dist
 /app/css
 /gzipped
+./libs/node_modules
 /tmp
 /out-tsc
 /storybook-static
