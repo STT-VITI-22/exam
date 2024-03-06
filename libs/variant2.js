@@ -1,45 +1,70 @@
-import {isComplex, isFraction} from "./variant1";
+const variant1 = require("./variant1");
 
-export function isRange (x) {
-  return (x && x.constructor.prototype.isRange === true) || false
+function isComplex(x) {
+  return (x && x.constructor.prototype.isComplex === true) || false;
 }
 
-export function isIndex (x) {
-  return (x && x.constructor.prototype.isIndex === true) || false
+function isFraction(x) {
+  return (x && x.constructor.prototype.isFraction === true) || false;
 }
 
-export function isBoolean (x) {
-  return typeof x === 'boolean'
+function isRange(x) {
+  return (x && x.constructor.prototype.isRange === true) || false;
 }
 
-export function isResultSet (x) {
-  return (x && x.constructor.prototype.isResultSet === true) || false
+function isIndex(x) {
+  return (x && x.constructor.prototype.isIndex === true) || false;
 }
 
-export function isHelp (x) {
-  return (x && x.constructor.prototype.isHelp === true) || false
+function isBoolean(x) {
+  return typeof x === 'boolean';
 }
 
-export function isFunction (x) {
-  return typeof x === 'function'
+function isResultSet(x) {
+  return (x && x.constructor.prototype.isResultSet === true) || false;
 }
 
-export function isDate (x) {
-  return x instanceof Date
+function isHelp(x) {
+  return (x && x.constructor.prototype.isHelp === true) || false;
 }
 
-export function isRegExp (x) {
-  return x instanceof RegExp
+function isFunction(x) {
+  return typeof x === 'function';
 }
 
-export function isObject (x) {
-  return !!(x &&
+function isDate(x) {
+  return x instanceof Date;
+}
+
+function isRegExp(x) {
+  return x instanceof RegExp;
+}
+
+function isObject(x) {
+  return !!(
+    x &&
     typeof x === 'object' &&
     x.constructor === Object &&
-    !isComplex(x) &&
-    !isFraction(x))
+    !variant1.isComplex(x) &&
+    !variant1.isFraction(x)
+  );
 }
 
-export function isNull (x) {
-  return x === null
+function isNull(x) {
+  return x === null;
 }
+
+module.exports = {
+  isRange,
+  isIndex,
+  isBoolean,
+  isResultSet,
+  isHelp,
+  isFunction,
+  isDate,
+  isRegExp,
+  isObject,
+  isNull,
+  isComplex,
+  isFraction,
+};
