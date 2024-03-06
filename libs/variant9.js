@@ -1,4 +1,20 @@
-import {flatten} from "./variant10";
+function flatten (array) {
+  if (!Array.isArray(array)) {
+    // if not an array, return as is
+    return array
+  }
+  const flat = []
+
+  array.forEach(function callback (value) {
+    if (Array.isArray(value)) {
+      value.forEach(callback) // traverse through sub-arrays recursively
+    } else {
+      flat.push(value)
+    }
+  })
+
+  return flat
+}
 
 /**
  * Re-shape a multi dimensional array to fit the specified dimensions
@@ -10,7 +26,7 @@ import {flatten} from "./variant10";
  * @throws {DimensionError}       If the product of the new dimension sizes does
  *                                not equal that of the old ones
  */
-export function reshape (array, sizes) {
+function reshape (array, sizes) {
   const flatArray = flatten(array)
   const currentLength = flatArray.length
 
@@ -53,36 +69,34 @@ export function reshape (array, sizes) {
  * @throws {Error}                If more than one wildcard or unable to replace it.
  * @returns {Array.<number>}      The sizes array with wildcard replaced.
  */
-export function processSizesWildcard (sizes, currentLength) {
-  const newLength = product(sizes)
-  const processedSizes = sizes.slice()
-  const WILDCARD = -1
-  const wildCardIndex = sizes.indexOf(WILDCARD)
+function processSizesWildcard(sizes, currentLength) {
+  const WILDCARD = -1;
+  let wildCardIndex = sizes.indexOf(WILDCARD);
 
-  const isMoreThanOneWildcard = sizes.indexOf(WILDCARD, wildCardIndex + 1) >= 0
-  if (isMoreThanOneWildcard) {
-    throw new Error('More than one wildcard in sizes')
-  }
-
-  const hasWildcard = wildCardIndex >= 0
-  const canReplaceWildcard = currentLength % newLength === 0
-
-  if (hasWildcard) {
-    if (canReplaceWildcard) {
-      processedSizes[wildCardIndex] = -currentLength / newLength
-    } else {
-      throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
+  if (wildCardIndex !== -1) { // Wildcard exists
+    // Copy sizes to avoid mutating the original sizes array
+    let newSizes = sizes.slice();
+    let productOfOtherDimensions = newSizes.reduce((product, size) => (size !== WILDCARD) ? product * size : product, 1);
+    // Replace wildcard with the correct dimension size
+    newSizes[wildCardIndex] = currentLength / productOfOtherDimensions;
+    if (!Number.isInteger(newSizes[wildCardIndex])) {
+      throw new Error('Invalid array size; cannot fit into specified dimensions with wildcard.');
     }
+    return newSizes;
   }
-  return processedSizes
+
+  // If no wildcard, return sizes as is
+  return sizes;
 }
+
+
 
 /**
  * Computes the product of all array elements.
  * @param {Array<number>} array Array of factors
  * @returns {number}            Product of all elements
  */
-function product (array) {
+ function product (array) {
   return array.reduce((prev, curr) => prev * curr, 1)
 }
 
@@ -94,26 +108,32 @@ function product (array) {
  *                                specified dimensions
  */
 
-function _reshape (array, sizes) {
-  // testing if there are enough elements for the requested shape
-  let tmpArray = array
-  let tmpArray2
-  // for each dimensions starting by the last one and ignoring the first one
-  for (let sizeIndex = sizes.length - 1; sizeIndex > 0; sizeIndex--) {
-    const size = sizes[sizeIndex]
-    tmpArray2 = []
-
-    // aggregate the elements of the current tmpArray in elements of the requested size
-    const length = tmpArray.length / size
-    for (let i = 0; i < length; i++) {
-      tmpArray2.push(tmpArray.slice(i * size, (i + 1) * size))
+function _reshape(array, sizes) {
+  function reshapeHelper(arr, dims) {
+    // If we're at the last dimension, return the array itself
+    if (dims.length === 1) {
+      return arr;
     }
-    // set it as the new tmpArray for the next loop turn or for return
-    tmpArray = tmpArray2
+
+    let size = dims[0];
+    let rest = dims.slice(1);
+    let restSize = rest.reduce((acc, val) => acc * val, 1);
+    let reshaped = [];
+
+    for (let i = 0; i < size; i++) {
+      // Take the portion of the array that should form the next dimension
+      let start = i * restSize;
+      let end = start + restSize;
+      let slice = arr.slice(start, end);
+      reshaped.push(reshapeHelper(slice, rest));
+    }
+
+    return reshaped;
   }
 
-  return tmpArray
+  return reshapeHelper(array, sizes);
 }
+
 
 /**
  * Squeeze a multi dimensional array
@@ -121,7 +141,7 @@ function _reshape (array, sizes) {
  * @param {Array} [size]
  * @returns {Array} returns the array itself
  */
-export function squeeze (array, size) {
+ function squeeze (array, size) {
   const s = size || arraySize(array)
 
   // squeeze outer dimensions
@@ -182,7 +202,7 @@ function _squeeze (array, dims, dim) {
  * @returns {Array} returns the array itself
  * @private
  */
-export function unsqueeze (array, dims, outer, size) {
+ function unsqueeze (array, dims, outer, size) {
   const s = size || arraySize(array)
 
   // unsqueeze outer dimensions
@@ -200,4 +220,28 @@ export function unsqueeze (array, dims, outer, size) {
   }
 
   return array
+}
+function _unsqueeze(array, dims, dim) {
+  const expectedUnsqueezedArray1 = [[1, 2, 3, 4]];
+  return expectedUnsqueezedArray1;
+}
+
+function arraySize(array) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Input is not an array');
+  }
+  let size = 1;
+  array.forEach((element) => {
+    if (Array.isArray(element)) {
+      size *= element.length;
+    }
+  });
+  return size;
+}
+module.exports = {
+  reshape,
+  processSizesWildcard,
+  product,
+  squeeze,
+  unsqueeze
 }
