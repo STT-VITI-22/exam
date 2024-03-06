@@ -1,42 +1,68 @@
-import {isBigNumber} from "./variant1";
+// import {isBigNumber} from "./variant1";
 
-export function isIndexNode (x) {
+function isBigNumber (x) {
+  if (
+    !x || typeof x !== 'object' ||
+    typeof x.constructor !== 'function'
+  ) {
+    return false
+  }
+
+  if (
+    x.isBigNumber === true &&
+    typeof x.constructor.prototype === 'object' &&
+    x.constructor.prototype.isBigNumber === true
+  ) {
+    return true
+  }
+
+  if (
+    typeof x.constructor.isDecimal === 'function' &&
+    x.constructor.isDecimal(x) === true
+  ) {
+    return true
+  }
+
+  return false
+}
+
+function isIndexNode (x) {
   return (x && x.isIndexNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isNode (x) {
+function isNode (x) {
   return (x && x.isNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isObjectNode (x) {
+function isObjectNode (x) {
   return (x && x.isObjectNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isOperatorNode (x) {
+function isOperatorNode (x) {
   return (x && x.isOperatorNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isParenthesisNode (x) {
+function isParenthesisNode (x) {
   return (x && x.isParenthesisNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isRangeNode (x) {
+function isRangeNode (x) {
   return (x && x.isRangeNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isRelationalNode (x) {
+function isRelationalNode (x) {
   return (x && x.isRelationalNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isSymbolNode (x) {
+function isSymbolNode (x) {
   return (x && x.isSymbolNode === true && x.constructor.prototype.isNode === true) || false
 }
 
-export function isChain (x) {
+function isChain (x) {
   return (x && x.constructor.prototype.isChain === true) || false
 }
 
-export function typeOf (x) {
+function typeOf (x) {
   const t = typeof x
 
   if (t === 'object') {
@@ -49,3 +75,17 @@ export function typeOf (x) {
 
   return t // can be 'string', 'number', 'boolean', 'function', 'bigint', ...
 }
+
+module.exports  = {
+  isBigNumber,
+  isIndexNode,
+  isNode,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode,
+  isRangeNode,
+  isRelationalNode,
+  isSymbolNode,
+  isChain,
+  typeOf,
+};
