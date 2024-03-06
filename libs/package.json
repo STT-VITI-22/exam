@@ -1,0 +1,25 @@
+{
+  "name": "libs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.v7.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "jest": {
+    "testMatch": [
+      "**/test.v7.js"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0"
+  }
+}

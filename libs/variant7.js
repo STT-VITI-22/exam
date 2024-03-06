@@ -1,4 +1,7 @@
-import {splitNumber} from "./variant5";
+import { splitNumber, roundDigits } from "./variant5";
+
+//done
+
 
 /**
  * Format a number in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
@@ -10,6 +13,7 @@ export function toEngineering (value, precision) {
     return String(value)
   }
 
+  //dgf
   const split = splitNumber(value)
   const rounded = roundDigits(split, precision)
 

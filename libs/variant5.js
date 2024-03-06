@@ -1,4 +1,4 @@
-/**
+/**done
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue
  */
 
