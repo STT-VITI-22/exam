@@ -1,0 +1,12 @@
+{
+  "name": "libs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib.spec.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
