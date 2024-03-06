@@ -5,15 +5,18 @@
  * @param {Array} x
  * @Return {Number[]} size
  */
-export function arraySize (x) {
-  const s = []
+function arraySize(x) {
+  const s = [];
 
-  while (Array.isArray(x)) {
-    s.push(x.length)
-    x = x[0]
+  function getSize(arr) {
+    if (Array.isArray(arr)) {
+      s.push(arr.length);
+      getSize(arr[0]); // Рекурсивно обчислюємо розмір інших вимірів
+    }
   }
 
-  return s
+  getSize(x);
+  return s;
 }
 
 /**
@@ -60,7 +63,7 @@ function _validate (array, size, dim) {
  * @param {number[]} size  Array with the size of each dimension
  * @throws DimensionError
  */
-export function validate (array, size) {
+ function validate (array, size) {
   const isScalar = (size.length === 0)
   if (isScalar) {
     // scalar
@@ -79,7 +82,7 @@ export function validate (array, size) {
  * @param {number} index    Zero-based index
  * @param {number} [length] Length of the array
  */
-export function validateIndex (index, length) {
+ function validateIndex (index, length) {
   if (!isNumber(index) || !isInteger(index)) {
     throw new TypeError('Index must be an integer (value: ' + index + ')')
   }
@@ -98,7 +101,7 @@ export function validateIndex (index, length) {
  *                              set.
  * @return {Array} array         The resized array
  */
-export function resize (array, size, defaultValue) {
+ function resize (array, size, defaultValue) {
   // TODO: add support for scalars, having size=[] ?
 
   // check the type of the arguments
@@ -183,3 +186,4 @@ function _resize (array, size, dim, defaultValue) {
     }
   }
 }
+module.exports = {arraySize, validate, _validate, validateIndex, resize, _resize}
