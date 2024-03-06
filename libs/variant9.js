@@ -1,28 +1,5 @@
-/**
- * Flatten a multi dimensional array, put all elements in a one dimensional
- * array
- * @param {Array} array   A multi dimensional array
- * @return {Array}        The flattened array (1 dimensional)
- */
- export function flatten (array) {
-  if (!Array.isArray(array)) {
-    // if not an array, return as is
-    return array
-  }
-  const flat = []
+const {flatten} = require('./variant10')
 
-  array.forEach(function callback (value) {
-    if (Array.isArray(value)) {
-      value.forEach(callback) // traverse through sub-arrays recursively
-    } else {
-      flat.push(value)
-    }
-  })
-
-  return flat
-}
-
-/**
 /**
  * Re-shape a multi dimensional array to fit the specified dimensions
  * @param {Array} array           Array to be reshaped
@@ -33,7 +10,7 @@
  * @throws {DimensionError}       If the product of the new dimension sizes does
  *                                not equal that of the old ones
  */
-export function reshape (array, sizes) {
+function reshape (array, sizes) {
   const flatArray = flatten(array)
   const currentLength = flatArray.length
 
@@ -76,7 +53,7 @@ export function reshape (array, sizes) {
  * @throws {Error}                If more than one wildcard or unable to replace it.
  * @returns {Array.<number>}      The sizes array with wildcard replaced.
  */
-export function processSizesWildcard (sizes, currentLength) {
+function processSizesWildcard (sizes, currentLength) {
   const newLength = product(sizes)
   const processedSizes = sizes.slice()
   const WILDCARD = -1
@@ -144,7 +121,7 @@ function _reshape (array, sizes) {
  * @param {Array} [size]
  * @returns {Array} returns the array itself
  */
-export function squeeze (array, size) {
+ function squeeze (array, size) {
   const s = size || arraySize(array)
 
   // squeeze outer dimensions
@@ -205,7 +182,7 @@ function _squeeze (array, dims, dim) {
  * @returns {Array} returns the array itself
  * @private
  */
-export function unsqueeze (array, dims, outer, size) {
+ function unsqueeze (array, dims, outer, size) {
   const s = size || arraySize(array)
 
   // unsqueeze outer dimensions
@@ -225,56 +202,12 @@ export function unsqueeze (array, dims, outer, size) {
   return array
   
 }
-
-
-describe('reshape function', () => {
-  test('reshape array with correct dimensions', () => {
-    const array = [[1, 2], [3, 4], [5, 6]];
-    const sizes = [2, 3];
-    expect(reshape(array, sizes)).toEqual([[1, 2, 3], [4, 5, 6]]);
-  });
-
-  test('reshape array with incorrect dimensions', () => {
-    const array = [1, 2, 3, 4, 5, 6];
-    const sizes = [3, 2]; // Incorrect dimensions
-    expect(() => reshape(array, sizes)).toThrow(DimensionError);
-  });
-
-  test('reshape array with wildcard', () => {
-    const array = [1, 2, 3, 4, 5, 6];
-    const sizes = [-1, 2]; // Wildcard used
-    expect(reshape(array, sizes)).toEqual([[1, 2], [3, 4], [5, 6]]);
-  });
-});
-
-describe('processSizesWildcard function', () => {
-  test('replace wildcard with valid size', () => {
-    const sizes = [-1, 3];
-    const currentLength = 9;
-    expect(processSizesWildcard(sizes, currentLength)).toEqual([3, 3]);
-  });
-
-  test('throw error if more than one wildcard', () => {
-    const sizes = [-1, -1];
-    const currentLength = 9;
-    expect(() => processSizesWildcard(sizes, currentLength)).toThrow(Error);
-  });
-
-  test('throw error if unable to replace wildcard', () => {
-    const sizes = [-1, 3];
-    const currentLength = 10; // Not a multiple of -3
-    expect(() => processSizesWildcard(sizes, currentLength)).toThrow(Error);
-  });
-});
-
-describe('product function', () => {
-  test('calculate product of array elements', () => {
-    const array = [2, 3, 4];
-    expect(product(array)).toEqual(24);
-  });
-
-  test('calculate product of empty array', () => {
-    const array = [];
-    expect(product(array)).toEqual(1); // Product of empty array is 1
-  });
-});
+module.exports = {
+  reshape,
+  processSizesWildcard,
+  product,
+  _reshape,
+  squeeze,
+  _squeeze,
+  unsqueeze,
+}
