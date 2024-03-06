@@ -1,4 +1,4 @@
-const variant1 = require("./variant1");
+//const variant1 = require("./variant1");
 
 function isComplex(x) {
   return (x && x.constructor.prototype.isComplex === true) || false;
