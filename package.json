@@ -1,0 +1,22 @@
+{
+  "name": "exam_manzhai",
+  "version": "1.0.0",
+  "description": "> Final exam for checking student knowledge and practical skills",
+  "main": "variant1.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManzhaiHeorhii/exam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ManzhaiHeorhii/exam/issues"
+  },
+  "homepage": "https://github.com/ManzhaiHeorhii/exam#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
