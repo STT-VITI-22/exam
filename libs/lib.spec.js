@@ -1,4 +1,9 @@
-const {toEngineering, acosh, asinh, atanh, cosh, sinh, tanh, copysign } = require("D:\\ttpz\\exam\\libs\\variant7.js");
+const variant7  = require("D:\\ttpz\\exam\\libs\\variant7.js");
+const { toEngineering} = require("./variant7").toEngineering ;
+
+
+
+
 
 describe('toEngineering', () => {
     test("форматує число в інженерну нотацію", () => {
