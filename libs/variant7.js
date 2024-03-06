@@ -1,4 +1,7 @@
-import {splitNumber} from "./variant5";
+import { splitNumber, roundDigits } from "./variant5";
+
+
+
 
 /**
  * Format a number in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
