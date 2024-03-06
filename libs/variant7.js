@@ -1,11 +1,11 @@
-import {splitNumber} from "./variant5";
+var splitNumber = require("./variant5").splitNumber;
 
 /**
  * Format a number in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
  * @param {number | string} value
  * @param {number} [precision]        Optional number of significant figures to return.
  */
-export function toEngineering (value, precision) {
+ function toEngineering (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -59,11 +59,11 @@ export function toEngineering (value, precision) {
  * @param {number} x
  * @return {number}
  */
-export const acosh = Math.acosh || function (x) {
+ const acosh = Math.acosh || function (x) {
   return Math.log(Math.sqrt(x * x - 1) + x)
 }
 
-export const asinh = Math.asinh || function (x) {
+ const asinh = Math.asinh || function (x) {
   return Math.log(Math.sqrt(x * x + 1) + x)
 }
 
@@ -72,7 +72,7 @@ export const asinh = Math.asinh || function (x) {
  * @param {number} x
  * @return {number}
  */
-export const atanh = Math.atanh || function (x) {
+ const atanh = Math.atanh || function (x) {
   return Math.log((1 + x) / (1 - x)) / 2
 }
 
@@ -81,7 +81,7 @@ export const atanh = Math.atanh || function (x) {
  * @param {number} x
  * @returns {number}
  */
-export const cosh = Math.cosh || function (x) {
+ const cosh = Math.cosh || function (x) {
   return (Math.exp(x) + Math.exp(-x)) / 2
 }
 
@@ -90,7 +90,7 @@ export const cosh = Math.cosh || function (x) {
  * @param {number} x
  * @returns {number}
  */
-export const sinh = Math.sinh || function (x) {
+ const sinh = Math.sinh || function (x) {
   return (Math.exp(x) - Math.exp(-x)) / 2
 }
 
@@ -99,7 +99,7 @@ export const sinh = Math.sinh || function (x) {
  * @param {number} x
  * @returns {number}
  */
-export const tanh = Math.tanh || function (x) {
+ const tanh = Math.tanh || function (x) {
   const e = Math.exp(2 * x)
   return (e - 1) / (e + 1)
 }
@@ -110,8 +110,9 @@ export const tanh = Math.tanh || function (x) {
  * @param {number} y
  * @returns {number}
  */
-export function copysign (x, y) {
+ function copysign (x, y) {
   const signx = x > 0 ? true : x < 0 ? false : 1 / x === Infinity
   const signy = y > 0 ? true : y < 0 ? false : 1 / y === Infinity
   return signx ^ signy ? -x : x
 }
+module.exports = {toEngineering, acosh, asinh, atanh, cosh, sinh, tanh, copysign };

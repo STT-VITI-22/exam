@@ -7,7 +7,7 @@
  * @param {number | boolean} value
  * @return {boolean} isInteger
  */
-export function isInteger (value) {
+ function isInteger (value) {
   if (typeof value === 'boolean') {
     return true
   }
@@ -22,7 +22,7 @@ export function isInteger (value) {
  * @param {number} x
  * @returns {number}
  */
-export const sign = /* #__PURE__ */ Math.sign || function (x) {
+ const sign = /* #__PURE__ */ Math.sign || function (x) {
   if (x > 0) {
     return 1
   } else if (x < 0) {
@@ -37,7 +37,7 @@ export const sign = /* #__PURE__ */ Math.sign || function (x) {
  * @param {number} x
  * @returns {number}
  */
-export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
+ const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
   return Math.log(x) / Math.LN2
 }
 
@@ -49,7 +49,7 @@ export const log2 = /* #__PURE__ */ Math.log2 || function log2 (x) {
  * @return {SplitValue}
  *              Returns an object containing sign, coefficients, and exponent
  */
-export function splitNumber (value) {
+ function splitNumber (value) {
   // parse the input value
   const match = String(value).toLowerCase().match(/^(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
   if (!match) {
@@ -90,7 +90,7 @@ export function splitNumber (value) {
  * @param {number} [precision=undefined]  Optional number of decimals after the
  *                                        decimal point. null by default.
  */
-export function toFixed (value, precision) {
+ function toFixed (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -125,7 +125,7 @@ export function toFixed (value, precision) {
 /**
  * Minimum number added to one that makes the result different than one
  */
-export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
+ const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 
 /**
  * Compares two floating point numbers.
@@ -136,7 +136,7 @@ export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-
  *                            test whether x and y are exactly equal.
  * @return {boolean} whether the two numbers are nearly equal
  */
-export function nearlyEqual (x, y, epsilon) {
+ function nearlyEqual (x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
   if (epsilon === null || epsilon === undefined) {
     return x === y
