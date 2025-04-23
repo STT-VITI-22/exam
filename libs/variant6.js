@@ -1,4 +1,4 @@
-import {splitNumber} from "./variant5";
+const {splitNumber} = require("./variant5");
 
 /**
  * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
@@ -7,7 +7,7 @@ import {splitNumber} from "./variant5";
  *                              If not provided, the maximum available digits
  *                              is used.
  */
-export function toExponential (value, precision) {
+function toExponential(value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -39,7 +39,7 @@ export function toExponential (value, precision) {
  *                                         upper = +5 (excl)
  * @return {string}
  */
-export function toPrecision (value, precision, options) {
+function toPrecision(value, precision, options) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -87,7 +87,7 @@ export function toPrecision (value, precision, options) {
  *              Returns an object containing sign, coefficients, and exponent
  *              with rounded digits
  */
-export function roundDigits (split, precision) {
+function roundDigits(split, precision) {
   // create a clone
   const rounded = {
     sign: split.sign,
@@ -130,7 +130,7 @@ export function roundDigits (split, precision) {
  * @param {number} length
  * @return {Array}
  */
-function zeros (length) {
+function zeros(length) {
   const arr = []
   for (let i = 0; i < length; i++) {
     arr.push(0)
@@ -149,10 +149,12 @@ function zeros (length) {
  * @param {number} value
  * @return {number} digits   Number of significant digits
  */
-export function digits (value) {
+function digits(value) {
   return value
     .toExponential()
     .replace(/e.*$/, '') // remove exponential notation
     .replace(/^0\.?0*|\./, '') // remove decimal point and leading zeros
     .length
 }
+
+module.exports = {roundDigits}
