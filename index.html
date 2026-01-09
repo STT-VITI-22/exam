@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mocha BDD Tests - Variant 12</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    #mocha {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .stats {
+      background: #4CAF50;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 Unit Tests для variant12 (BDD стиль)</h1>
+  <div id="mocha"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.10/chai.min.js"></script>
+  
+  <script type="module">
+    // Налаштування Mocha для BDD стилю
+    mocha.setup('bdd');
+    const { expect } = chai;
+
+    // Функції для тестування
+    function isRangeTest(x) {
+      return !!(
+        x &&
+        typeof x.start === 'number' &&
+        typeof x.end === 'number' &&
+        Number.isFinite(x.start) &&
+        Number.isFinite(x.end) &&
+        x.start <= x.end &&
+        Math.abs(x.end - x.start) >= 0
+      );
+    }
+
+    function isIndexTest(x) {
+      return (
+        Number.isInteger(x) &&
+        x >= 0 &&
+        (x & 1) === 0
+      );
+    }
+
+    function isBooleanTest(x) {
+      return typeof x === 'boolean' && (x === true || x === false);
+    }
+
+    function isResultSetTest(x) {
+      return !!(
+        x &&
+        Array.isArray(x.values) &&
+        x.values.length > 0 &&
+        x.values.every(v =>
+          typeof v === 'number' &&
+          Number.isFinite(v)
+        ) &&
+        average(x.values) !== 0
+      );
+    }
+
+    function isHelpTest(x) {
+      return !!(
+        x &&
+        typeof x.text === 'string' &&
+        x.text.length > 5 &&
+        /^[A-Z]/.test(x.text)
+      );
+    }
+
+    function isFunctionTest(x) {
+      return (
+        typeof x === 'function' &&
+        x.length >= 0 &&
+        Number.isFinite(x(0))
+      );
+    }
+
+    function isDateTest(x) {
+      return (
+        x instanceof Date &&
+        !isNaN(x.getTime()) &&
+        x.getTime() <= Date.now()
+      );
+    }
+
+    function isRegExpTest(x) {
+      return (
+        x instanceof RegExp &&
+        x.source.length > 0 &&
+        x.test('test') !== undefined
+      );
+    }
+
+    function isObjectTest(x) {
+      return !!(
+        x &&
+        typeof x === 'object' &&
+        !Array.isArray(x) &&
+        Object.keys(x).length > 0 &&
+        Object.values(x).some(v =>
+          typeof v === 'number' && Math.abs(v) > 0
+        )
+      );
+    }
+
+    function isNullTest(x) {
+      return x === null || Object.is(x, null);
+    }
+
+    function average(arr) {
+      return arr.reduce((s, v) => s + v, 0) / arr.length;
+    }
+
+    // ========================================
+    // BDD ТЕСТИ (розширена версія)
+    // ========================================
+
+    describe('🔢 isRangeTest - перевірка числових діапазонів', () => {
+      
+      describe('✅ Валідні діапазони', () => {
+        it('приймає діапазон від 0 до 10', () => {
+          expect(isRangeTest({ start: 0, end: 10 })).to.be.true;
+        });
+
+        it('приймає діапазон з однаковими значеннями', () => {
+          expect(isRangeTest({ start: 5, end: 5 })).to.be.true;
+        });
+
+        it('приймає від\'ємний діапазон', () => {
+          expect(isRangeTest({ start: -10, end: -5 })).to.be.true;
+        });
+
+        it('приймає діапазон через нуль', () => {
+          expect(isRangeTest({ start: -5, end: 5 })).to.be.true;
+        });
+
+        it('приймає великі числа', () => {
+          expect(isRangeTest({ start: 1000, end: 9999 })).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні діапазони', () => {
+        it('відхиляє коли start більше за end', () => {
+          expect(isRangeTest({ start: 10, end: 5 })).to.be.false;
+        });
+
+        it('відхиляє Infinity як start', () => {
+          expect(isRangeTest({ start: Infinity, end: 10 })).to.be.false;
+        });
+
+        it('відхиляє NaN як end', () => {
+          expect(isRangeTest({ start: 0, end: NaN })).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isRangeTest(null)).to.be.false;
+        });
+
+        it('відхиляє undefined', () => {
+          expect(isRangeTest(undefined)).to.be.false;
+        });
+
+        it('відхиляє рядки замість чисел', () => {
+          expect(isRangeTest({ start: '0', end: '10' })).to.be.false;
+        });
+
+        it('відхиляє об\'єкт без властивості end', () => {
+          expect(isRangeTest({ start: 0 })).to.be.false;
+        });
+      });
+    });
+
+    describe('📇 isIndexTest - перевірка парних індексів', () => {
+      
+      describe('✅ Валідні індекси', () => {
+        it('приймає 0', () => {
+          expect(isIndexTest(0)).to.be.true;
+        });
+
+        it('приймає 2', () => {
+          expect(isIndexTest(2)).to.be.true;
+        });
+
+        it('приймає 100', () => {
+          expect(isIndexTest(100)).to.be.true;
+        });
+
+        it('приймає великі парні числа', () => {
+          expect(isIndexTest(1000)).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні індекси', () => {
+        it('відхиляє непарне число 1', () => {
+          expect(isIndexTest(1)).to.be.false;
+        });
+
+        it('відхиляє непарне число 99', () => {
+          expect(isIndexTest(99)).to.be.false;
+        });
+
+        it('відхиляє від\'ємні парні числа', () => {
+          expect(isIndexTest(-2)).to.be.false;
+        });
+
+        it('відхиляє дробові числа', () => {
+          expect(isIndexTest(2.5)).to.be.false;
+        });
+
+        it('відхиляє рядки', () => {
+          expect(isIndexTest('2')).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isIndexTest(null)).to.be.false;
+        });
+      });
+    });
+
+    describe('✔️ isBooleanTest - перевірка булевих значень', () => {
+      
+      describe('✅ Валідні булеві', () => {
+        it('приймає true', () => {
+          expect(isBooleanTest(true)).to.be.true;
+        });
+
+        it('приймає false', () => {
+          expect(isBooleanTest(false)).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні булеві', () => {
+        it('відхиляє 0', () => {
+          expect(isBooleanTest(0)).to.be.false;
+        });
+
+        it('відхиляє 1', () => {
+          expect(isBooleanTest(1)).to.be.false;
+        });
+
+        it('відхиляє рядок "true"', () => {
+          expect(isBooleanTest('true')).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isBooleanTest(null)).to.be.false;
+        });
+
+        it('відхиляє undefined', () => {
+          expect(isBooleanTest(undefined)).to.be.false;
+        });
+
+        it('відхиляє порожній масив', () => {
+          expect(isBooleanTest([])).to.be.false;
+        });
+      });
+    });
+
+    describe('📊 isResultSetTest - перевірка набору результатів', () => {
+      
+      describe('✅ Валідні набори', () => {
+        it('приймає масив додатних чисел', () => {
+          expect(isResultSetTest({ values: [1, 2, 3] })).to.be.true;
+        });
+
+        it('приймає масив з одним ненульовим елементом', () => {
+          expect(isResultSetTest({ values: [5] })).to.be.true;
+        });
+
+        it('приймає масив від\'ємних чисел', () => {
+          expect(isResultSetTest({ values: [-5, -10, -15] })).to.be.true;
+        });
+
+        it('приймає змішані додатні та від\'ємні з ненульовим середнім', () => {
+          expect(isResultSetTest({ values: [10, -2, 3] })).to.be.true;
+        });
+
+        it('приймає дробові числа', () => {
+          expect(isResultSetTest({ values: [1.5, 2.5, 3.5] })).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні набори', () => {
+        it('відхиляє масив з одним нулем', () => {
+          expect(isResultSetTest({ values: [0] })).to.be.false;
+        });
+
+        it('відхиляє порожній масив', () => {
+          expect(isResultSetTest({ values: [] })).to.be.false;
+        });
+
+        it('відхиляє масив зі строками', () => {
+          expect(isResultSetTest({ values: [1, 'a', 3] })).to.be.false;
+        });
+
+        it('відхиляє масив з Infinity', () => {
+          expect(isResultSetTest({ values: [Infinity] })).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isResultSetTest(null)).to.be.false;
+        });
+
+        it('відхиляє об\'єкт без values', () => {
+          expect(isResultSetTest({ data: [1, 2, 3] })).to.be.false;
+        });
+      });
+    });
+
+    describe('❓ isHelpTest - перевірка довідкових текстів', () => {
+      
+      describe('✅ Валідні довідки', () => {
+        it('приймає текст "Hello world"', () => {
+          expect(isHelpTest({ text: 'Hello world' })).to.be.true;
+        });
+
+        it('приймає довгий текст з великої літери', () => {
+          expect(isHelpTest({ text: 'Testing is very important' })).to.be.true;
+        });
+
+        it('приймає текст з цифрами', () => {
+          expect(isHelpTest({ text: 'Version 2.0 released' })).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні довідки', () => {
+        it('відхиляє текст з малої літери', () => {
+          expect(isHelpTest({ text: 'hello world' })).to.be.false;
+        });
+
+        it('відхиляє короткий текст (5 символів)', () => {
+          expect(isHelpTest({ text: 'Hello' })).to.be.false;
+        });
+
+        it('відхиляє дуже короткий текст', () => {
+          expect(isHelpTest({ text: 'Hi' })).to.be.false;
+        });
+
+        it('відхиляє порожній текст', () => {
+          expect(isHelpTest({ text: '' })).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isHelpTest(null)).to.be.false;
+        });
+
+        it('відхиляє об\'єкт без text', () => {
+          expect(isHelpTest({ description: 'Hello world' })).to.be.false;
+        });
+      });
+    });
+
+    describe('⚙️ isFunctionTest - перевірка функцій', () => {
+      
+      describe('✅ Валідні функції', () => {
+        it('приймає функцію що повертає константу', () => {
+          expect(isFunctionTest(() => 42)).to.be.true;
+        });
+
+        it('приймає функцію з параметром', () => {
+          expect(isFunctionTest((x) => x * 2)).to.be.true;
+        });
+
+        it('приймає функцію що повертає від\'ємне число', () => {
+          expect(isFunctionTest(() => -100)).to.be.true;
+        });
+
+        it('приймає функцію з обчисленням', () => {
+          expect(isFunctionTest((x) => Math.sqrt(x))).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні функції', () => {
+        it('відхиляє функцію що повертає Infinity', () => {
+          expect(isFunctionTest(() => Infinity)).to.be.false;
+        });
+
+        it('відхиляє функцію що повертає NaN', () => {
+          expect(isFunctionTest(() => NaN)).to.be.false;
+        });
+
+        it('відхиляє число', () => {
+          expect(isFunctionTest(42)).to.be.false;
+        });
+
+        it('відхиляє рядок', () => {
+          expect(isFunctionTest('function')).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isFunctionTest(null)).to.be.false;
+        });
+      });
+    });
+
+    describe('📅 isDateTest - перевірка дат', () => {
+      
+      describe('✅ Валідні дати', () => {
+        it('приймає поточну дату', () => {
+          expect(isDateTest(new Date())).to.be.true;
+        });
+
+        it('приймає дату з минулого', () => {
+          expect(isDateTest(new Date('2020-01-01'))).to.be.true;
+        });
+
+        it('приймає дату вчора', () => {
+          const yesterday = new Date(Date.now() - 86400000);
+          expect(isDateTest(yesterday)).to.be.true;
+        });
+
+        it('приймає дуже стару дату', () => {
+          expect(isDateTest(new Date('1990-05-15'))).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні дати', () => {
+        it('відхиляє майбутню дату', () => {
+          const futureDate = new Date(Date.now() + 1000000);
+          expect(isDateTest(futureDate)).to.be.false;
+        });
+
+        it('відхиляє невалідну дату', () => {
+          expect(isDateTest(new Date('invalid'))).to.be.false;
+        });
+
+        it('відхиляє рядок з датою', () => {
+          expect(isDateTest('2020-01-01')).to.be.false;
+        });
+
+        it('відхиляє timestamp', () => {
+          expect(isDateTest(1609459200000)).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isDateTest(null)).to.be.false;
+        });
+      });
+    });
+
+    describe('🔍 isRegExpTest - перевірка регулярних виразів', () => {
+      
+      describe('✅ Валідні RegExp', () => {
+        it('приймає простий патерн', () => {
+          expect(isRegExpTest(/test/)).to.be.true;
+        });
+
+        it('приймає патерн з прапорцями', () => {
+          expect(isRegExpTest(/[a-z]+/i)).to.be.true;
+        });
+
+        it('приймає складний патерн', () => {
+          expect(isRegExpTest(/^\d{3}-\d{2}-\d{4}$/)).to.be.true;
+        });
+
+        it('приймає патерн з символьними класами', () => {
+          expect(isRegExpTest(/\w+@\w+\.\w+/)).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні RegExp', () => {
+        it('відхиляє рядок', () => {
+          expect(isRegExpTest('/test/')).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isRegExpTest(null)).to.be.false;
+        });
+
+        it('відхиляє об\'єкт', () => {
+          expect(isRegExpTest({ pattern: 'test' })).to.be.false;
+        });
+      });
+    });
+
+    describe('📦 isObjectTest - перевірка об\'єктів', () => {
+      
+      describe('✅ Валідні об\'єкти', () => {
+        it('приймає об\'єкт з одним додатним числом', () => {
+          expect(isObjectTest({ a: 5 })).to.be.true;
+        });
+
+        it('приймає об\'єкт з від\'ємним числом', () => {
+          expect(isObjectTest({ x: -10 })).to.be.true;
+        });
+
+        it('приймає об\'єкт зі змішаними властивостями', () => {
+          expect(isObjectTest({ a: 0, b: 5, c: 'text' })).to.be.true;
+        });
+
+        it('приймає об\'єкт з дробовими числами', () => {
+          expect(isObjectTest({ value: 3.14 })).to.be.true;
+        });
+
+        it('приймає об\'єкт з кількома числами', () => {
+          expect(isObjectTest({ x: 1, y: 2, z: 3 })).to.be.true;
+        });
+      });
+
+      describe('❌ Невалідні об\'єкти', () => {
+        it('відхиляє порожній об\'єкт', () => {
+          expect(isObjectTest({})).to.be.false;
+        });
+
+        it('відхиляє об\'єкт тільки з нульовими числами', () => {
+          expect(isObjectTest({ a: 0, b: 0 })).to.be.false;
+        });
+
+        it('відхиляє об\'єкт без чисел', () => {
+          expect(isObjectTest({ name: 'John', age: '30' })).to.be.false;
+        });
+
+        it('відхиляє масив', () => {
+          expect(isObjectTest([1, 2, 3])).to.be.false;
+        });
+
+        it('відхиляє null', () => {
+          expect(isObjectTest(null)).to.be.false;
+        });
+
+        it('відхиляє примітивні типи', () => {
+          expect(isObjectTest(123)).to.be.false;
+        });
+      });
+    });
+
+    describe('⭕ isNullTest - перевірка null', () => {
+      
+      describe('✅ Валідний null', () => {
+        it('приймає null', () => {
+          expect(isNullTest(null)).to.be.true;
+        });
+      });
+
+      describe('❌ Не-null значення', () => {
+        it('відхиляє undefined', () => {
+          expect(isNullTest(undefined)).to.be.false;
+        });
+
+        it('відхиляє 0', () => {
+          expect(isNullTest(0)).to.be.false;
+        });
+
+        it('відхиляє порожній рядок', () => {
+          expect(isNullTest('')).to.be.false;
+        });
+
+        it('відхиляє false', () => {
+          expect(isNullTest(false)).to.be.false;
+        });
+
+        it('відхиляє порожній об\'єкт', () => {
+          expect(isNullTest({})).to.be.false;
+        });
+
+        it('відхиляє порожній масив', () => {
+          expect(isNullTest([])).to.be.false;
+        });
+      });
+    });
+
+    // Запуск тестів
+    mocha.run();
+  </script>
+</body>
+</html>
