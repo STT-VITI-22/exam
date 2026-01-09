@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Variant12 Tests</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mocha@10.2.0/mocha.css">
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mocha@10.2.0/mocha.js"></script>
+  <script>
+    mocha.setup('bdd');
+  </script>
+
+  <!-- Підключаємо тести через модуль і виконуємо mocha.run() після завантаження -->
+  <script type="module">
+    import { expect } from 'https://cdn.jsdelivr.net/npm/chai@4.3.7/+esm';
+    import './tests/variant12.test.js';
+
+    // Передаємо expect в глобальну область для тестів
+    window.expect = expect;
+
+    // Запускаємо тести після завантаження модулів
+    mocha.run();
+  </script>
+</body>
+</html>

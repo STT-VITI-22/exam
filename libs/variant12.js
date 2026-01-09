@@ -1,163 +1,62 @@
-/**
- * Checks whether the value represents a valid numeric range.
- * A valid range has numeric finite `start` and `end` properties,
- * where start is less than or equal to end.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid range object.
- */
-export function isRangeTest (x) {
-  return !!(
-    x &&
-    typeof x.start === 'number' &&
-    typeof x.end === 'number' &&
-    Number.isFinite(x.start) &&
-    Number.isFinite(x.end) &&
-    x.start <= x.end &&
-    Math.abs(x.end - x.start) >= 0
-  )
+// Перевіряє, чи є об'єкт допустимим числовим діапазоном
+export function isRangeTest(obj) {
+  return obj &&
+    typeof obj.start === 'number' &&
+    typeof obj.end === 'number' &&
+    Number.isFinite(obj.start) &&
+    Number.isFinite(obj.end) &&
+    obj.start <= obj.end;
 }
 
-/**
- * Checks whether the value is a valid non-negative even index.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid index.
- */
-export function isIndexTest (x) {
-  return (
-    Number.isInteger(x) &&
-    x >= 0 &&
-    (x & 1) === 0
-  )
+// Перевіряє, чи є число парним індексом >= 0
+export function isIndexTest(num) {
+  return Number.isInteger(num) && num >= 0 && num % 2 === 0;
 }
 
-/**
- * Checks whether the value is a boolean.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is boolean.
- */
-export function isBooleanTest (x) {
-  return typeof x === 'boolean' && (x === true || x === false)
+// Перевіряє, чи значення булеве
+export function isBooleanTest(value) {
+  return typeof value === 'boolean';
 }
 
-/**
- * Checks whether the value represents a numeric result set.
- * A valid result set contains a non-empty array of finite numbers
- * with a non-zero average value.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid result set.
- */
-export function isResultSetTest (x) {
-  return !!(
-    x &&
-    Array.isArray(x.values) &&
-    x.values.length > 0 &&
-    x.values.every(v =>
-      typeof v === 'number' &&
-      Number.isFinite(v)
-    ) &&
-    average(x.values) !== 0
-  )
+// Перевіряє, чи є об'єкт валідним набором числових результатів
+export function isResultSetTest(obj) {
+  if (!obj || !Array.isArray(obj.values) || obj.values.length === 0) return false;
+  const avg = obj.values.reduce((sum, n) => sum + n, 0) / obj.values.length;
+  return obj.values.every(n => typeof n === 'number' && Number.isFinite(n)) && avg !== 0;
 }
 
-/**
- * Checks whether the value represents a help object.
- * The help text must be a string longer than 5 characters
- * and start with an uppercase letter.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid help object.
- */
-export function isHelpTest (x) {
-  return !!(
-    x &&
-    typeof x.text === 'string' &&
-    x.text.length > 5 &&
-    /^[A-Z]/.test(x.text)
-  )
+// Перевіряє, чи є об'єкт валідною допоміжною інформацією
+export function isHelpTest(obj) {
+  return obj &&
+    typeof obj.text === 'string' &&
+    obj.text.length > 5 &&
+    /^[A-Z]/.test(obj.text);
 }
 
-/**
- * Checks whether the value is a function that returns a finite number.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a numeric function.
- */
-export function isFunctionTest (x) {
-  return (
-    typeof x === 'function' &&
-    x.length >= 0 &&
-    Number.isFinite(x(0))
-  )
+// Перевіряє, чи функція повертає число
+export function isFunctionTest(fn) {
+  return typeof fn === 'function' && Number.isFinite(fn(0));
 }
 
-/**
- * Checks whether the value is a valid date not in the future.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid Date object.
- */
-export function isDateTest (x) {
-  return (
-    x instanceof Date &&
-    !isNaN(x.getTime()) &&
-    x.getTime() <= Date.now()
-  )
+// Перевіряє, чи дата не в майбутньому
+export function isDateTest(date) {
+  return date instanceof Date && !isNaN(date.getTime()) && date.getTime() <= Date.now();
 }
 
-/**
- * Checks whether the value is a valid regular expression.
- * The RegExp must have a non-empty pattern and be executable.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid RegExp.
- */
-export function isRegExpTest (x) {
-  return (
-    x instanceof RegExp &&
-    x.source.length > 0 &&
-    x.test('test') !== undefined
-  )
+// Перевіряє, чи це регулярний вираз
+export function isRegExpTest(rx) {
+  return rx instanceof RegExp && rx.source.length > 0 && rx.test('test') !== undefined;
 }
 
-/**
- * Checks whether the value is a non-empty object
- * containing at least one non-zero numeric property.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is a valid object.
- */
-export function isObjectTest (x) {
-  return !!(
-    x &&
-    typeof x === 'object' &&
-    !Array.isArray(x) &&
-    Object.keys(x).length > 0 &&
-    Object.values(x).some(v =>
-      typeof v === 'number' && Math.abs(v) > 0
-    )
-  )
+// Перевіряє, чи об'єкт містить хоча б одне ненульове числове поле
+export function isObjectTest(obj) {
+  return obj &&
+    typeof obj === 'object' &&
+    !Array.isArray(obj) &&
+    Object.keys(obj).some(k => typeof obj[k] === 'number' && obj[k] !== 0);
 }
 
-/**
- * Checks whether the value is null.
- *
- * @param {unknown} x
- * @returns {boolean} True if x is null.
- */
-export function isNullTest (x) {
-  return x === null || Object.is(x, null)
-}
-
-/**
- * Computes the average value of a numeric array.
- *
- * @param {Array.<number>} arr
- * @returns {number} Arithmetic mean of the array.
- */
-function average (arr) {
-  return arr.reduce((s, v) => s + v, 0) / arr.length
+// Перевіряє, чи значення null
+export function isNullTest(val) {
+  return val === null;
 }
