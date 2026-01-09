@@ -4,7 +4,7 @@
 
 ## Variant 1:
 
->  Using Jest a delightful JavaScript Testing Framework creata unit test for file in libs/variant1.js file
+>   
 
 ## Variant 2:
 
