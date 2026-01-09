@@ -12,7 +12,7 @@
 
 
 ## Variant 3:
-
+![Результат роботи](assets/img.png)
 > Using Jest a delightful JavaScript Testing Framework creata unit test for file in libs/variant3.js file
 
 ## Variant 4:

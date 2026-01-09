@@ -1,0 +1,35 @@
+{
+  "name": "exam",
+  "version": "1.0.0",
+  "description": "Final exam for checking student knowledge and practical skills",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:variant3": "node --experimental-vm-modules node_modules/jest/bin/jest.js libs/variant3.test.js --coverage --collectCoverageFrom='libs/variant3.js'",
+    "test:variant4": "node --experimental-vm-modules node_modules/jest/bin/jest.js libs/variant4.test.js --coverage --collectCoverageFrom='libs/variant4.js'"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "collectCoverageFrom": [
+      "libs/**/*.js",
+      "!libs/**/*.test.js"
+    ],
+    "testMatch": [
+      "**/libs/variant3.test.js",
+      "**/libs/variant4.test.js"
+    ],
+    "transform": {}
+  }
+}

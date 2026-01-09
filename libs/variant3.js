@@ -27,6 +27,10 @@ export function isConstantNode (x) {
   return (x && x.isConstantNode === true && x.constructor.prototype.isNode === true) || false
 }
 
+export function isOperatorNode (x) {
+  return (x && x.isOperatorNode === true && x.constructor.prototype.isNode === true) || false
+}
+
 /* Very specialized: returns true for those nodes which in the numerator of
    a fraction means that the division in that fraction has precedence over implicit
    multiplication, e.g. -2/3 x parses as (-2/3) x and 3/4 x parses as (3/4) x but
